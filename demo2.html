@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Clock</title>
+<style>
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+	.clock-interface {
+		position: absolute;
+		top: 45%;
+		left: 50%;
+		width: 180px;
+		height: auto;
+		margin: -131px -90px;
+	}
+	.analog-surface {
+		width: 180px;
+		height: 180px;
+		border: 10px solid #e2574c;
+		background: #fff;
+		border-radius: 100%;
+		position: relative;
+		-webkit-transition: all 1000ms ease-in-out;
+		-moz-transition: all 1000ms ease-in-out;
+	}
+	.analog-hour,
+	.analog-min {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 3px;
+		-webkit-transform-origin: bottom;
+		-moz-transform-origin: bottom;
+
+		-webkit-transition: all 1000ms ease-in-out;
+		-moz-transition: all 1000ms ease-in-out;
+
+		-webkit-transform: rotate(0deg);
+		-moz-transform: rotate(0deg);
+
+	}
+	.analog-hour:after,
+	.analog-min:after {
+		position: absolute;
+		content: '';
+		display: block;
+		height: 100%;
+		width: 100%;
+		background: #808080;
+		-webkit-transform-origin: bottom;
+		-moz-transform-origin: bottom;
+
+		-webkit-transition: all 1000ms ease-in-out;
+		-moz-transition: all 1000ms ease-in-out;
+	}
+	.analog-min:after {
+		-webkit-animation: rotate360 3600s infinite linear;
+		-moz-animation: rotate360 3600s infinite linear;
+	}
+	.analog-hour:after {
+		-webkit-animation: rotate360 43200s infinite linear;
+		-moz-animation: rotate360 43200s infinite linear;
+	}
+	.analog-hour {
+		height: 30%;
+		margin: -30% -1px;
+	}
+	.analog-min {
+		height: 35%;
+		margin: -35% -1px;
+	}
+	.analog-sec,
+	.analog-sec:after {
+		position: absolute;
+
+		width: 1px;
+		height: 50%;
+		margin: -40% 0;
+	}
+	.analog-sec {
+		top: 50%;
+		left: 50%;
+		-webkit-transform-origin: 50% 80%;
+		-moz-transform-origin: 50% 80%;
+	}
+	.analog-sec:after {
+		content: '';
+		display: block;
+		height: 100%;
+		width: 100%;
+		background: #ff725f;
+
+		-webkit-transform-origin: 50% 80%;
+		-moz-transform-origin: 50% 80%;
+
+		-webkit-transition: all 1000ms linear;
+		-moz-transition: all 1000ms linear;
+
+		-webkit-animation: rotate360 60s infinite linear;
+		-moz-animation: rotate360 60s infinite linear;
+	}
+	@-webkit-keyframes rotate360 {
+		from {
+			-webkit-transform: rotate(0deg);
+		}
+		to {
+			-webkit-transform: rotate(360deg);
+		}
+	}
+	@-moz-keyframes rotate360 {
+		from {
+			-moz-transform: rotate(0deg);
+		}
+		to {
+			-moz-transform: rotate(360deg);
+		}
+	}
+	.analog-hat {
+		width: 10px;
+		height: 10px;
+		border-radius: 100%;
+		background: #808080;
+
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		margin: -5px;
+	}
+	.night-analog {
+		background: #000;
+	}
+	.night-analog .analog-hour:after,
+	.night-analog .analog-min:after,
+	.night-analog .analog-hat {
+		background: #fff;
+	}
+
+	.digital-clock {
+		position: relative;
+		margin: 30px 0;
+	}
+	.digital-clock > span {
+		position: absolute;
+		left: 49%;
+		top: 2px;
+	}
+	.digital-display {
+		width: 45px;
+		height: 22px;
+		line-height: 22px;
+		margin: 0 auto;
+		overflow: hidden;
+		position: relative;
+	}
+	.digital-display span {
+		position: relative;
+		display: inline-block;
+		width: 10px;
+		color: #333;
+	}
+	.digital-display span:nth-child(2) {
+		margin: 0 5px 0 0;
+	}
+	.digital-display span:before,
+	.digital-display span:after {
+		position: absolute;
+		left: 0;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		-webkit-backface-visibility: hidden;
+		-moz-backface-visibility: hidden;
+
+		-webkit-transition: -webkit-transform .75s;
+		-moz-transition: -moz-transform .75s;
+	}
+	.digital-display span:before {
+		content: attr(data-old);
+		z-index: 1;
+		-webkit-transform: translate3d(0,0,0);
+		-moz-transform: translate3d(0,0,0);
+	}
+	.digital-display span:after {
+		content: attr(data-now);
+		z-index: 2;
+		-webkit-transform: translate3d(0, -102.5%, 0);
+		-moz-transform: translate3d(0, -102.5%, 0);
+	}
+	.digital-display .flip:before {
+		-webkit-transform: translate3d(0, 102.5%, 0);
+		-moz-transform: translate3d(0, 102.5%, 0);
+	}
+	.digital-display .flip:after {
+		-webkit-transform: translate3d(0, 0, 0);
+		-moz-transform: translate3d(0, 0, 0);
+	}
+
+</style>
+</head>
+<body>
+	<div class="clock-interface">
+		<div class="analog-clock">
+			<!-- 表面 与 圈壳 -->
+			<div class="analog-surface">
+				<div id="clock-hours" class="analog-hour"></div>
+				<div class="analog-min"></div>
+				<div class="analog-sec"></div>
+				<div class="analog-hat"></div>
+			</div>
+		</div>
+		<div class="digital-clock">
+			<div class="digital-display"></div>
+			<span>:</span>
+		</div>
+	</div>
+	
+</body>
+<!-- http://xiangwen518.blog.163.com/blog/static/273824922007417104438588/ -->
+<script>
+(function() {
+	function rotate(selector, deg) {
+		var el = document.querySelector(selector);
+		el.style.webkitTransform = 'rotate('+ deg + 'deg)';
+		el.style.transform = 'rotate('+ deg +'deg)';
+	};
+
+// 设置模拟时钟
+function setAnalog() {
+
+	var now = new Date();
+	var h = now.getHours();
+	var m = now.getMinutes();
+	var s = now.getSeconds();
+	var delayTime;
+	var tables = document.querySelector('.analog-surface');
+	if(h > 18 || h < 6) {
+		tables.classList.add('night-analog');
+		if(h > 18)
+		delayTime = (12*3600 - ((h-18)*60*60 + m*60 + s))*1000;
+		if(h<6)
+		delayTime = ((5-h)*3600 + (59-m)*60 + (60-s))*1000;
+
+		toDaytime(delayTime);
+	} else {
+		delayTime = ((17-h)*3600 + (26-m)*60 + (60-s))*1000;
+		toNight(delayTime);
+	}
+	console.log('delayTime'+delayTime);
+	// 每分钟查询下当前时钟大小，判断是否显示为夜晚
+	function toDaytime(time) {
+		setTimeout(function() {
+			console.log('good moring');
+			tables.classList.remove('night-analog');
+			delayTime = 12*3600000;
+			toNight(delayTime);
+		}, time);
+	}
+	function toNight(time) {
+		setTimeout(function() {
+			console.log('welcome to night');
+			tables.classList.add('night-analog');
+			delayTime = 12*3600000;
+			toDaytime(delayTime);
+		}, time);
+	}
+
+	h = (h> 11) ? h-12: h;
+	rotate('.analog-hour', ((h*3600 + m*60 + s)/43200 * 360));
+	rotate('.analog-min', ((m*60+s)/3600*360));
+	rotate('.analog-sec', (s/60*360));
+}
+setAnalog();
+
+	// 模拟时钟
+var Clock = (function(){  
+	var exports = function(element) {
+		this._element = element;
+		var html = '';
+		// 设置为6则带有钞数
+		for (var i=0;i<4;i++) {
+			html += '<span>&nbsp;</span>';
+		}
+		this._element.innerHTML = html;
+		// getElementsByTagName('span') 返回span的个数集合
+		this._slots = this._element.getElementsByTagName('span');
+		this._tick();
+	};
+	exports.prototype = {
+		_tick:function() {
+			var time = new Date();
+			this._update(this._pad(time.getHours()) + this._pad(time.getMinutes()) + this._pad(time.getSeconds()));
+			var self = this;
+			setTimeout(function(){
+				self._tick();
+			},1000);
+		},
+		_pad:function(value) {
+			return ('0' + value).slice(-2);
+		},
+		_update:function(timeString) {
+			var i=0,l=this._slots.length,value,slot,now;
+			for (;i<l;i++) {
+				value = timeString.charAt(i);
+				slot = this._slots[i];
+				now = slot.dataset.now;
+				if (!now) {
+					slot.dataset.now = value;
+					slot.dataset.old = value;
+					continue;
+				}
+				if (now !== value) {
+					this._flip(slot,value);
+				}
+			}
+		},
+		_flip:function(slot,value) {
+			slot.classList.remove('flip');
+			slot.dataset.old = slot.dataset.now;
+			slot.dataset.now = value;
+			slot.offsetLeft;
+			slot.classList.add('flip');
+		}
+	};
+	return exports;
+}());
+
+	var i=0,
+	clocks = document.querySelectorAll('.digital-display'),
+	l=clocks.length;
+	for (;i<l;i++) {
+		new Clock(clocks[i]);
+	}
+
+}() );
+</script>
+</html>

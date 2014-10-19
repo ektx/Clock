@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>数字时钟</title>
+<script src="/~zwl/lib/jquery-2.1.1.min.js"></script>
+<style>
+html,body {
+	height: 100%;
+}
+	body {
+		background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, #fff), color-stop(100%, #eee)); /* chrome, safari4+ */
+		background: -webkit-radial-gradient(center top, ellipse cover, #fff 0%,#eee 100%); /*chrome10+,safari5.1+*/
+		background: -moz-radial-gradient(center top, ellipse cover, #fff 0%, #eee 100%); /* ff3.6+ */
+		background: -o-radial-gradient(center top, ellipse cover, #fff 0%, #eee 100%); /* opera 12+ */
+		background: -ms-radial-gradient(center top, ellipse cover, #fff 0%, #eee 100%); /* IE10+ */
+		background: radial-gradient(ellipse at center top, #fff 0%, #eee 100%); /* w3c */
+		filter: progid:DXImageTransform.Micrsoft.gradient(startColorstr='#fff',endColorstr='#eee',GradientType=1); /*IE6-9*/
+	}
+	/* 设定存放容器 */
+	.digital-clock {
+		position: absolute;
+		top: 40%;
+		left: 50%;
+		width: 260px;
+		margin: 0 -130px;
+		line-height: 22px;
+	}
+	.digital-clock > div {
+		float: left;
+		font-size: 12px;
+		margin: 0 10px;
+	}
+
+	/* 非修改样式 */
+	.digital-display,
+	.digital-YMD {
+		position: relative;
+		text-align: center;
+		float: left;
+	}
+	.digital-display span, 
+	.digital-display b {
+		float: left;
+		display: inline-block;
+		width: 12px;
+		height: 22px;
+		position: relative;
+	}
+
+	.tims-mod {
+		float: left;
+	}
+
+	.digital-display i,
+	.digital-YMD i {
+		font: 12px/1.4 arial;
+		width: 100%;
+		height: 100%;
+		text-align: center;
+		line-height: 22px;
+	}
+	.digital-display i {
+		position: absolute;
+		left: 0;
+		will-change: top;
+		-webkit-transition: all .6s ease;
+		transition: all .6s ease;
+		opacity: 0;
+	}
+	.digital-display .c-now {
+		top: 0;
+		opacity: 1;
+	}
+	.c-old {
+		top: -80%;
+	}
+	.c-new {
+		top: 80%;
+	}
+
+	.flash {
+		-webkit-animation: flash-clock 1s infinite;
+		animation: flash-clock 1s infinite;
+	}
+	@-webkit-keyframes flash-clock {
+		0%,50% {
+			opacity: 1;
+		}
+		100% {
+			opacity: 0;
+		}
+	}
+	@keyframes flash-clock {
+		0%,50% {
+			opacity: 1;
+		}
+		100% {
+			opacity: 0;
+		}
+	}
+
+
+</style>
+</head>
+<body>
+	<div class="digital-clock"></div>
+</body>
+<script>
+function defSet(num, element, YMD, week) {
+	// YMD = !YMD ? 0 : 1;
+	// week = !week ? 0 : 1;
+
+	var chtml = '';
+
+	week = 1;
+	YMD = 1;
+
+	if (YMD) {
+		chtml += '<div class="digital-YMD"><i>M</i>月<i>D</i>日</div>';
+	}
+
+	if (week) {
+		chtml += '<div class="digital-weeks">周x</div>';
+	}
+
+	chtml += '<div class="digital-display">';
+
+	if (num > 6) {
+		console.error('时间最多6位！或是4位！');
+		return;
+	}
+
+	for (var i = 0; i < num/2; i++) {
+		chtml += '<div class="tims-mod">';
+		for (var s = 0; s < 2; s++) {
+			chtml += '<span><i class="c-old">9</i><i class="c-now">0</i><i class="c-new">1</i></span>';
+		}
+		chtml += '</div>';
+		if (i != num/2 -1) {
+			if (num == 4) {
+				chtml += '<b class="flash">';
+			} else {
+				chtml += '<b>';
+			}
+			chtml += ':</b>';
+
+		}
+	}
+
+	chtml += '</div>';
+
+	$(element).html(chtml);
+};
+
+function update(num) {
+	num = !num ? '231422': num;
+
+	var nowTime = '';
+	$('.c-now').each(function() {
+		nowTime += $(this).html();
+	});
+
+	for ( var i = 0; i < num.length; i++) {
+
+		if (num[i] != nowTime[i]) {
+			$('.digital-display span:eq('+i+') i').each(function() {
+				if ($(this).hasClass('c-now')) {
+					$(this).addClass('c-old').removeClass('c-now');
+
+				} else if ($(this).hasClass('c-new')) {
+					$(this).addClass('c-now').removeClass('c-new').html(num[i]);
+				} else {
+					$(this).addClass('c-new').removeClass('c-old');
+				}
+			})
+		}
+	}
+}
+
+function setNum(num) {
+	if (num <= 9) {
+		return ('0'+num.toString());
+	} else {
+		return num.toString();
+	}
+}
+
+function clockAnimation() {
+	var ctime = new Date();
+	var weeks = ['周末','周一','周二','周三','周四','周五','周六'];
+	var nowweek = weeks[ctime.getDay()];
+
+	var getWeek = $('.digital-weeks');
+	var getMonth = $('.digital-YMD i:first');
+	var getDay = $('.digital-YMD i:last');
+
+	if (getWeek.html() != nowweek) {
+		getWeek.html(nowweek);
+		// console.warn('update');
+	}
+
+	if (getMonth.html() != ctime.getMonth()+1) {
+		getMonth.html(ctime.getMonth()+1);
+		// console.warn('update M');
+	}
+
+	if (getDay.html() != ctime.getDate()) {
+		getDay.html(ctime.getDate());
+		// console.warn('update D');
+	}
+	
+	update(setNum(ctime.getHours()) + setNum(ctime.getMinutes()) + setNum(ctime.getSeconds()) );
+
+
+
+	var self = this;
+	setTimeout(function() {
+		self.clockAnimation();
+	}, 1000)
+
+}
+
+defSet(6,'.digital-clock');
+clockAnimation();
+</script>
+</html>

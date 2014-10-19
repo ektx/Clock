@@ -1,0 +1,226 @@
+@charset "utf-8";
+
+/* demo3 css
+ * zwl 2014-10-15 5
+ */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+.clock-interface {
+	position: absolute;
+	top: 45%;
+	left: 50%;
+	width: 180px;
+	height: auto;
+	margin: -131px -90px;
+}
+.analog-surface {
+	width: 180px;
+	height: 180px;
+	border: 10px solid #e2574c;
+	background: #fff;
+	border-radius: 100%;
+	position: relative;
+	-webkit-transition: all 1000ms ease-in-out;
+	-moz-transition: all 1000ms ease-in-out;
+	transition: all 1000ms ease-in-out;
+}
+.analog-hour,
+.analog-min {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 3px;
+	-webkit-transform-origin: bottom;
+	-moz-transform-origin: bottom;
+	transform-origin: bottom;
+
+	-webkit-transition: all 1000ms ease-in-out;
+	-moz-transition: all 1000ms ease-in-out;
+	transition: all 1000ms ease-in-out;
+
+	-webkit-transform: rotate(0deg);
+	-moz-transform: rotate(0deg);
+	transform: rotate(0deg);
+
+}
+.analog-hour:after,
+.analog-min:after {
+	position: absolute;
+	content: '';
+	display: block;
+	height: 100%;
+	width: 100%;
+	background: #808080;
+	will-change: transform;
+
+	-webkit-transform-origin: bottom;
+	-moz-transform-origin: bottom;
+	transform-origin: bottom;
+
+	-webkit-transition: all 1000ms ease-in-out;
+	-moz-transition: all 1000ms ease-in-out;
+	transition: all 1000ms ease-in-out;
+}
+.analog-min:after {
+	-webkit-animation: rotate360 3600s infinite linear;
+	-moz-animation: rotate360 3600s infinite linear;
+	animation: rotate360 3600s infinite linear;
+}
+.analog-hour:after {
+	-webkit-animation: rotate360 43200s infinite linear;
+	-moz-animation: rotate360 43200s infinite linear;
+	animation: rotate360 43200s infinite linear;
+}
+.analog-hour {
+	height: 30%;
+	margin: -30% -1px;
+}
+.analog-min {
+	height: 35%;
+	margin: -35% -1px;
+}
+.analog-sec,
+.analog-sec:after {
+	position: absolute;
+
+	width: 1px;
+	height: 50%;
+	margin: -40% 0;
+}
+.analog-sec {
+	top: 50%;
+	left: 50%;
+	-webkit-transform-origin: 50% 80%;
+	-moz-transform-origin: 50% 80%;
+	transform-origin: 50% 80%;
+}
+.analog-sec:after {
+	content: '';
+	display: block;
+	height: 100%;
+	width: 100%;
+	background: #ff725f;
+
+	-webkit-transform-origin: 50% 80%;
+	-moz-transform-origin: 50% 80%;
+	transform-origin: 50% 80%;
+
+	-webkit-transition: all 1000ms linear;
+	-moz-transition: all 1000ms linear;
+	transition: all 1000ms linear;
+
+	-webkit-animation: rotate360 60s infinite linear;
+	-moz-animation: rotate360 60s infinite linear;
+	animation: rotate360 60s infinite linear;
+}
+@-webkit-keyframes rotate360 {
+	from {
+		-webkit-transform: rotate(0deg);
+	}
+	to {
+		-webkit-transform: rotate(360deg);
+	}
+}
+@-moz-keyframes rotate360 {
+	from {
+		-moz-transform: rotate(0deg);
+	}
+	to {
+		-moz-transform: rotate(360deg);
+	}
+}
+@keyframes rotate360 {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+.analog-hat {
+	width: 10px;
+	height: 10px;
+	border-radius: 100%;
+	background: #808080;
+
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -5px;
+}
+.night-analog {
+	background: #000;
+}
+.night-analog .analog-hour:after,
+.night-analog .analog-min:after,
+.night-analog .analog-hat {
+	background: #fff;
+}
+
+/* =====================================================
+ * 数字时间 请修改时修改digital.html不要修改此下面内容
+ * ================================================== */
+/* 设定存放容器 */
+.digital-clock {
+	position: relative;
+	margin: 10px 0 0 0;
+}
+
+/* 非修改样式 */
+.digital-display {
+	position: absolute;
+	text-align: center;
+	width: 100%;
+}
+span, b {
+	display: inline-block;
+	width: 16px;
+	height: 22px;
+	line-height: 22px;
+	position: relative;
+}
+b {
+	top: -6px;
+}
+.tims-mod {
+	display: inline-block;
+}
+
+i {
+	font: 12px/1.4 arial;
+	position: absolute;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	will-change: top;
+	-webkit-transition: all .6s ease;
+	transition: all .6s ease;
+	opacity: 0;
+	line-height: 22px;
+}
+.c-now {
+	top: 0;
+	opacity: 1;
+}
+.c-old {
+	top: -80%;
+}
+.c-new {
+	top: 80%;
+}
+
+.flash {
+	-webkit-animation: flash-clock 1s infinite;
+}
+@-webkit-keyframes flash-clock {
+	0%,50% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}

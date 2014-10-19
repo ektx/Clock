@@ -1,0 +1,199 @@
+@charset "utf-8";
+/* clock app
+ *
+ */
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+.clock-interface {
+	position: absolute;
+	top: 45%;
+	left: 50%;
+	width: 180px;
+	height: auto;
+	margin: -131px -90px;
+}
+.analog-surface {
+	width: 180px;
+	height: 180px;
+	border: 10px solid #e2574c;
+	background: #fff;
+	border-radius: 100%;
+	position: relative;
+	-webkit-transition: all 1000ms ease-in-out;
+	-moz-transition: all 1000ms ease-in-out;
+}
+.analog-hour,
+.analog-min {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 3px;
+	-webkit-transform-origin: bottom;
+	-moz-transform-origin: bottom;
+
+	-webkit-transition: all 1000ms ease-in-out;
+	-moz-transition: all 1000ms ease-in-out;
+
+	-webkit-transform: rotate(0deg);
+	-moz-transform: rotate(0deg);
+
+}
+.analog-hour:after,
+.analog-min:after {
+	position: absolute;
+	content: '';
+	display: block;
+	height: 100%;
+	width: 100%;
+	background: #808080;
+	-webkit-transform-origin: bottom;
+	-moz-transform-origin: bottom;
+
+	-webkit-transition: all 1000ms ease-in-out;
+	-moz-transition: all 1000ms ease-in-out;
+}
+.analog-min:after {
+	-webkit-animation: rotate360 3600s infinite linear;
+	-moz-animation: rotate360 3600s infinite linear;
+}
+.analog-hour:after {
+	-webkit-animation: rotate360 43200s infinite linear;
+	-moz-animation: rotate360 43200s infinite linear;
+}
+.analog-hour {
+	height: 30%;
+	margin: -30% -1px;
+}
+.analog-min {
+	height: 35%;
+	margin: -35% -1px;
+}
+.analog-sec,
+.analog-sec:after {
+	position: absolute;
+
+	width: 1px;
+	height: 50%;
+	margin: -40% 0;
+}
+.analog-sec {
+	top: 50%;
+	left: 50%;
+	-webkit-transform-origin: 50% 80%;
+	-moz-transform-origin: 50% 80%;
+}
+.analog-sec:after {
+	content: '';
+	display: block;
+	height: 100%;
+	width: 100%;
+	background: #ff725f;
+
+	-webkit-transform-origin: 50% 80%;
+	-moz-transform-origin: 50% 80%;
+
+	-webkit-transition: all 1000ms linear;
+	-moz-transition: all 1000ms linear;
+
+	-webkit-animation: rotate360 60s infinite linear;
+	-moz-animation: rotate360 60s infinite linear;
+}
+@-webkit-keyframes rotate360 {
+	from {
+		-webkit-transform: rotate(0deg);
+	}
+	to {
+		-webkit-transform: rotate(360deg);
+	}
+}
+@-moz-keyframes rotate360 {
+	from {
+		-moz-transform: rotate(0deg);
+	}
+	to {
+		-moz-transform: rotate(360deg);
+	}
+}
+.analog-hat {
+	width: 10px;
+	height: 10px;
+	border-radius: 100%;
+	background: #808080;
+
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -5px;
+}
+.night-analog {
+	background: #000;
+}
+.night-analog .analog-hour:after,
+.night-analog .analog-min:after,
+.night-analog .analog-hat {
+	background: #fff;
+}
+
+.digital-clock {
+	position: relative;
+	margin: 30px 0;
+}
+.digital-clock > span {
+	position: absolute;
+	left: 49%;
+	top: 2px;
+}
+.digital-display {
+	width: 45px;
+	height: 22px;
+	line-height: 22px;
+	margin: 0 auto;
+	overflow: hidden;
+	position: relative;
+}
+.digital-display span {
+	position: absolute;
+	display: inline-block;
+	width: 20px;
+	color: #333;
+	list-style: none;
+	top: 0;
+	bottom: 0;
+	z-index: 1;
+}
+.digital-display span:nth-child(1) {
+	left: 0;
+}
+.digital-display span:nth-child(2) {
+	right: 0;
+}
+.digital-display span i {
+	opacity: 0;
+	width: 100%;
+	height: 100%;
+
+	position: absolute;
+	top: 0;
+	left: 0;
+	text-align: center;
+	-webkit-transition: all 1s;
+	transition: all 1s;
+	-webkit-transform: translateY(102%);
+	transform: translateY(102%);
+	font-style: normal;
+
+}
+
+.digital-display span i.now {
+	opacity: 1;
+	-webkit-transform: translateY(0%);
+	transform: translateY(0%);
+}
+.digital-display span i.past {
+	-webkit-transform: translateY(-102%);
+	transform: translateY(-102%);
+}	
