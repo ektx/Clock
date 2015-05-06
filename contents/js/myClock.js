@@ -44,7 +44,7 @@ function setAnalog() {
 	rotate('.analog-min', ((m*60+s)/3600*360));
 	rotate('.analog-sec', (s/60*360));
 }
-setAnalog();
+
 
 /* =====================================================
  * 数字时间 请修改时修改digital.html不要修改此下面内容
@@ -125,5 +125,20 @@ function clockAnimation() {
 
 }
 
-defSet(4,'.digital-display');
-clockAnimation();
+$(function() {
+	setAnalog();
+
+	defSet(4,'.digital-display');
+	clockAnimation();
+
+	if (window.self != window.top) {
+
+		$(window).blur(function() {
+			$('.clock-interface').hide();
+
+			
+		});
+
+
+	}
+})
