@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<!-- http://codepen.io/nessthehero/pen/asdbE?editors=001 -->
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>cnavas clock</title>
+	<script type="text/javascript" src="lantooWeb/content/js/jquery-1.11.2.min.js"></script>
+</head>
+<body>
+	<canvas id="clock" width="300" height="300"></canvas>
+	<div id="time"></div>
+</body>
+<script type="text/javascript">
+	var canvas = $('#clock').get(0);
+	var ctx = canvas.getContext('2d');
+
+	render = function() {
+		var time = new Date();
+		var hour = time.getHours()+ (time.getMinutes() / 60);;
+		var min  = time.getMinutes()+ (time.getSeconds() / 60);
+		var sec  = time.getSeconds() + (time.getMilliseconds() / 1000);
+		var len  = 110;
+
+		if (hour > 12) hour = hour -12;
+
+		var angle_hour = 270.0 + (hour * 30);
+		var angle_min  = 270.0 + (min * 6.0);
+		var angle_sec  = 270.0 + (sec * 6.0);
+
+		var secx = len * Math.cos(angle_sec * Math.PI/180);
+		var secy = len * Math.sin(angle_sec * Math.PI/180);
+		
+		var tsecx = 20 * Math.cos(angle_sec * Math.PI/180);
+		var tsecy = 20 * Math.sin(angle_sec * Math.PI/180);
+
+		var minx = len * .8 * Math.cos(angle_min * Math.PI/180);
+		var miny = len * .8 * Math.sin(angle_min * Math.PI/180);
+
+		var hourx= len * .6 * Math.cos(angle_hour * Math.PI/180);
+		var houry= len * .6 * Math.sin(angle_hour * Math.PI/180);
+
+		ctx.clearRect(0, 0, 300, 300);
+
+
+		ctx.save();
+		ctx.fillStyle = '#000';
+		for (var i =1; i < 13; i++) {
+			ctx.fillText(i, 150+Math.cos(Math.PI/6*(i-3)) * 100 - 5, 150+Math.sin(Math.PI/6*(i-3)) * 100 +5);
+		}
+		ctx.restore();
+		
+		ctx.lineWidth = 3;
+		ctx.strokeStyle = '#000';
+		ctx.beginPath();
+		ctx.moveTo(300/2, 300/2);
+		ctx.lineTo(150 + minx, 150 + miny);
+		ctx.stroke();
+
+		ctx.lineWidth = 3;
+		ctx.beginPath();
+		ctx.moveTo(300/2, 300/2);
+		ctx.lineTo(150 + hourx, 150 + houry);
+		ctx.stroke();
+
+		// center
+		ctx.fillStyle = '#000';
+		ctx.beginPath();
+		ctx.arc(300/2, 300/2, 5, 0, Math.PI *2, true);
+		ctx.fill();
+		ctx.lineWidth = 1;
+
+		ctx.strokeStyle = 'red';
+		ctx.beginPath();
+		// ctx.moveTo(10 + secx, 10 + secy);
+		ctx.moveTo(150 - tsecx, 150 - tsecy);
+		ctx.lineTo(150 + secx, 150 + secy);
+		ctx.stroke();
+
+		ctx.fillStyle = 'red';
+		ctx.beginPath();
+		ctx.arc(300/2, 300/2, 3, 0, Math.PI *2, true);
+		ctx.fill();
+		ctx.closePath();
+
+		// 表框
+		ctx.lineWidth = 6;
+		ctx.strokeStyle = '#f60';
+		ctx.save();
+		ctx.beginPath();
+		ctx.arc(300/2, 300/2, 120, 0, Math.PI * 2, true);
+		ctx.stroke();
+		// ctx.closePath();
+
+
+		window.requestAnimationFrame(render);
+	}
+	render();
+</script>
+</html>
