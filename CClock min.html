@@ -7,7 +7,7 @@
 	<script type="text/javascript" src="contents/js/jquery-2.1.1.js"></script>
 </head>
 <body>
-	<canvas id="clock" width="300" height="300"></canvas>
+	<canvas id="clock" width="108" height="108"></canvas>
 	<div id="time"></div>
 </body>
 <script type="text/javascript">
@@ -16,10 +16,12 @@
 
 	render = function() {
 		var time = new Date();
+		var ctxW = 100;
+		var ctxH = 100;
 		var hour = time.getHours()+ (time.getMinutes() / 60);;
 		var min  = time.getMinutes()+ (time.getSeconds() / 60);
 		var sec  = time.getSeconds() + (time.getMilliseconds() / 1000);
-		var len  = 110;
+		var len  = 34;
 
 		if (hour > 12) hour = hour -12;
 
@@ -30,66 +32,51 @@
 		var secx = len * Math.cos(angle_sec * Math.PI/180);
 		var secy = len * Math.sin(angle_sec * Math.PI/180);
 		
-		var tsecx = 20 * Math.cos(angle_sec * Math.PI/180);
-		var tsecy = 20 * Math.sin(angle_sec * Math.PI/180);
+		var tsecx = 8 * Math.cos(angle_sec * Math.PI/180);
+		var tsecy = 8 * Math.sin(angle_sec * Math.PI/180);
 
-		var minx = len * .8 * Math.cos(angle_min * Math.PI/180);
-		var miny = len * .8 * Math.sin(angle_min * Math.PI/180);
+		var minx = len * Math.cos(angle_min * Math.PI/180);
+		var miny = len * Math.sin(angle_min * Math.PI/180);
 
 		var hourx= len * .6 * Math.cos(angle_hour * Math.PI/180);
 		var houry= len * .6 * Math.sin(angle_hour * Math.PI/180);
 
-		ctx.clearRect(0, 0, 300, 300);
-
-		ctx.save();
-		ctx.fillStyle = '#000';
-		for (var i =1; i < 13; i++) {
-			ctx.fillText(i, 150+Math.cos(Math.PI/6*(i-3)) * 100 - 5, 150+Math.sin(Math.PI/6*(i-3)) * 100 +5);
-		}
-		ctx.restore();
+		ctx.clearRect(0, 0, ctxW, ctxH);
 
 		ctx.lineWidth = 3;
-		ctx.strokeStyle = '#000';
+		ctx.strokeStyle = '#808080';
 		ctx.beginPath();
-		ctx.moveTo(300/2, 300/2);
-		ctx.lineTo(150 + minx, 150 + miny);
+		ctx.moveTo(ctxW/2, ctxH/2);
+		ctx.lineTo(ctxW/2 + minx, ctxH/2 + miny);
 		ctx.stroke();
 
 		ctx.lineWidth = 3;
 		ctx.beginPath();
-		ctx.moveTo(300/2, 300/2);
-		ctx.lineTo(150 + hourx, 150 + houry);
+		ctx.moveTo(ctxW/2, ctxH/2);
+		ctx.lineTo(ctxW/2 + hourx, ctxH/2 + houry);
+		ctx.stroke();
+
+
+		ctx.lineWidth = 1;
+		ctx.strokeStyle = '#E2574C';
+		ctx.beginPath();
+		ctx.moveTo(ctxW/2 - tsecx, ctxH/2 - tsecy);
+		ctx.lineTo(ctxW/2 + secx, ctxH/2 + secy);
 		ctx.stroke();
 
 		// center
-		ctx.fillStyle = '#000';
+		ctx.fillStyle = '#808080';
 		ctx.beginPath();
-		ctx.arc(300/2, 300/2, 5, 0, Math.PI *2, true);
+		ctx.arc(ctxW/2, ctxH/2, 4, 0, Math.PI *2, true);
 		ctx.fill();
-		ctx.lineWidth = 1;
-
-		ctx.strokeStyle = 'red';
-		ctx.beginPath();
-		// ctx.moveTo(10 + secx, 10 + secy);
-		ctx.moveTo(150 - tsecx, 150 - tsecy);
-		ctx.lineTo(150 + secx, 150 + secy);
-		ctx.stroke();
-
-		ctx.fillStyle = 'red';
-		ctx.beginPath();
-		ctx.arc(300/2, 300/2, 3, 0, Math.PI *2, true);
-		ctx.fill();
-		ctx.closePath();
 
 		// 表框
-		ctx.lineWidth = 6;
-		ctx.strokeStyle = '#f60';
+		ctx.lineWidth = 4;
+		ctx.strokeStyle = '#E2574C';
 		ctx.save();
 		ctx.beginPath();
-		ctx.arc(300/2, 300/2, 120, 0, Math.PI * 2, true);
+		ctx.arc(ctxW/2, ctxH/2, 46, 0, Math.PI * 2, true);
 		ctx.stroke();
-		// ctx.closePath();
-
 
 		window.requestAnimationFrame(render);
 	}
