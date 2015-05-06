@@ -1,6 +1,5 @@
-Clock
+#Clock
 ==================================================
-2014.10.19 早期<br/>
-页面说明<br/>
-1.Digital.html 数字时钟效果<br/>
-2.demo系列为数字在钟表效果<br/>
+* Digital.html 数字时钟效果  
+* demo.html 系列为数字在钟表效果  
+* cclock.html Canvas绘制的clock
