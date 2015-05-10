@@ -134,7 +134,7 @@ $(function() {
 	if (window.self != window.top) {
 
 		$(window).blur(function() {
-			$('.clock-interface').hide();
+			// $('.clock-interface').hide();
 
 			
 		});
