@@ -4,8 +4,6 @@
 	<meta charset="utf-8">
 	<title>Clock 时钟</title>
 	<meta name="Author" content="ektx1989@gmail.com"></meta>
-	<meta name="description" content="为自由，为未来！">
-	<meta name="keywords" content="简约 完美 方便 自然 MYOS Z-IOS">
 	<link rel="shortcut icon" href="contents/img/clock.png">
 	<link rel="stylesheet" href="contents/css/clockApp3.css" />
 	<!-- 修改为你的jq -->
@@ -22,35 +20,35 @@
 	
 </body>
 <script type="text/javascript">
-	var canvas = $('#clock').get(0);
-	var ctx = canvas.getContext('2d');
-	var canvasW = 200;
-	var len  = 80; // 指针长
+	let canvas = document.getElementById('clock');
+	let ctx = canvas.getContext('2d');
+	let canvasW = 200;
+	let len  = 80; // 指针长
 
 
 	render = function() {
-		var time = new Date();
-		var hour = time.getHours()+ (time.getMinutes() / 60);;
-		var min  = time.getMinutes()+ (time.getSeconds() / 60);
-		var sec  = time.getSeconds() + (time.getMilliseconds() / 1000);
+		let time = new Date();
+		let hour = time.getHours()+ (time.getMinutes() / 60);;
+		let min  = time.getMinutes()+ (time.getSeconds() / 60);
+		let sec  = time.getSeconds() + (time.getMilliseconds() / 1000);
 
 		if (hour > 12) hour = hour -12;
 
-		var angle_hour = 270.0 + (hour * 30);
-		var angle_min  = 270.0 + (min * 6.0);
-		var angle_sec  = 270.0 + (sec * 6.0);
+		let angle_hour = 270.0 + (hour * 30);
+		let angle_min  = 270.0 + (min * 6.0);
+		let angle_sec  = 270.0 + (sec * 6.0);
 
-		var secx = len * Math.cos(angle_sec * Math.PI/180);
-		var secy = len * Math.sin(angle_sec * Math.PI/180);
+		let secx = len * Math.cos(angle_sec * Math.PI/180);
+		let secy = len * Math.sin(angle_sec * Math.PI/180);
 		
-		var tsecx = 15 * Math.cos(angle_sec * Math.PI/180);
-		var tsecy = 15 * Math.sin(angle_sec * Math.PI/180);
+		let tsecx = 15 * Math.cos(angle_sec * Math.PI/180);
+		let tsecy = 15 * Math.sin(angle_sec * Math.PI/180);
 
-		var minx = len * .8 * Math.cos(angle_min * Math.PI/180);
-		var miny = len * .8 * Math.sin(angle_min * Math.PI/180);
+		let minx = len * .8 * Math.cos(angle_min * Math.PI/180);
+		let miny = len * .8 * Math.sin(angle_min * Math.PI/180);
 
-		var hourx= len * .6 * Math.cos(angle_hour * Math.PI/180);
-		var houry= len * .6 * Math.sin(angle_hour * Math.PI/180);
+		let hourx= len * .6 * Math.cos(angle_hour * Math.PI/180);
+		let houry= len * .6 * Math.sin(angle_hour * Math.PI/180);
 
 		ctx.clearRect(0, 0, 200, 200);
 
