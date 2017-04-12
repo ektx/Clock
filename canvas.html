@@ -21,9 +21,20 @@
 </body>
 <script type="text/javascript">
 	let canvas = document.getElementById('clock');
+	let ratio = window.devicePixelRatio;
 	let ctx = canvas.getContext('2d');
-	let canvasW = 200;
-	let len  = 80; // 指针长
+
+	if (ratio > 1) {
+		canvas.style.width = canvas.width + 'px';
+		canvas.style.height = canvas.height+'px';
+
+		canvas.width = canvas.width * ratio;
+		canvas.height = canvas.height * ratio;
+		ctx = canvas.getContext('2d');
+	}
+	
+	let canvasW = 200 * ratio;
+	let len  = 200 * ratio / 3.3; // 指针长
 
 
 	render = function() {
@@ -57,12 +68,13 @@
 		ctx.strokeStyle = '#E2574C';
 		ctx.fillStyle = time.getHours() > 18 || time.getHours() < 6 ? '#000' : '#fff';
 		ctx.beginPath();
-		ctx.arc(canvasW/2, canvasW/2, 90, 0, Math.PI * 2, true);
+		// 整体的2/3
+		ctx.arc(canvasW/2, canvasW/2, canvasW/2 * 2/3, 0, Math.PI * 2, true);
 		ctx.stroke();
 		ctx.fill();
 
 		ctx.lineWidth = 3;
-		ctx.strokeStyle = time.getHours() > 18 || time.getHours() < 6 ? '#fff':'#777';
+		ctx.strokeStyle = time.getHours() > 18 || time.getHours() < 6 ? '#fff':'#333';
 		ctx.beginPath();
 		ctx.moveTo(canvasW/2, canvasW/2);
 		ctx.lineTo(canvasW/2 + minx, canvasW/2 + miny);
